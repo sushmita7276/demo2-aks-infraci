@@ -1,0 +1,62 @@
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+
+# Stage 1: Terraform Plan
+- stage: Plan
+  jobs:
+  - job: TerraformPlan
+    steps:
+    - checkout: self
+
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: '1.13.3'
+
+    - task: AzureCLI@2
+      displayName: Terraform Init, Validate and Plan
+      inputs:
+        azureSubscription: 'demo1-aks-service-connection'
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          terraform init -input=false
+          terraform validate
+          echo "Checking Terraform state resources..."
+          terraform state list
+          terraform plan -input=false -out=tfplan
+          
+
+    - publish: tfplan
+      artifact: terraform-plan
+
+
+# Stage 2: Terraform Apply
+- stage: Apply
+  dependsOn: Plan
+  jobs:
+  - job: TerraformApply
+    steps:
+    - checkout: self
+
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: '1.13.3'
+
+    - download: current
+      artifact: terraform-plan
+
+    - task: AzureCLI@2
+      displayName: Terraform Apply
+      inputs:
+        azureSubscription: 'demo1-aks-service-connection'
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          terraform init -input=false
+          terraform apply -input=false -auto-approve "$(Pipeline.Workspace)/terraform-plan/tfplan"
