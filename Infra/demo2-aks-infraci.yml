@@ -39,7 +39,7 @@ stages:
           terraform show -no-color tfplan
           
 
-    - publish: tfplan
+    - publish: $(Build.SourcesDirectory)/Infra/tfplan
       artifact: terraform-plan
 
 
