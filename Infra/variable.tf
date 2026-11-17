@@ -37,7 +37,7 @@ variable "vm_size"{
 
 variable "user_vm_size" {
   type    = string
-  default = "Standard_D2as_v5"
+  default = "Standard_D2s_v6"
 }
 
 variable "user_node_count" {
