@@ -21,7 +21,7 @@ stages:
     - task: AzureCLI@2
       displayName: Terraform Init, Validate and Plan
       inputs:
-        azureSubscription: 'demo1-aks-service-connection'
+        azureSubscription: 'demo2-aks-service-connection'
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
@@ -54,7 +54,7 @@ stages:
     - task: AzureCLI@2
       displayName: Terraform Apply
       inputs:
-        azureSubscription: 'demo1-aks-service-connection'
+        azureSubscription: 'demo2-aks-service-connection'
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
