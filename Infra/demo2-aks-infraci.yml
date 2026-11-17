@@ -25,11 +25,18 @@ stages:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
+          set -e
+          cd "$(Build.SourcesDirectory)/Infra"
+          echo "Current Terraform directory:"
+          pwd
+          echo "Terraform configuration files:"
+          ls -la 
+          find . -name "*.tf" -not -path "./.terraform/*"
+
           terraform init -input=false
           terraform validate
-          echo "Checking Terraform state resources..."
-          terraform state list
           terraform plan -input=false -out=tfplan
+          terraform show -no-color tfplan
           
 
     - publish: tfplan
@@ -58,5 +65,8 @@ stages:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
+          set -e
+          cd "$(Build.SourcesDirectory)/Infra"
+
           terraform init -input=false
           terraform apply -input=false -auto-approve "$(Pipeline.Workspace)/terraform-plan/tfplan"
