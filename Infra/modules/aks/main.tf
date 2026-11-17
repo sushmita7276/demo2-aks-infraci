@@ -36,3 +36,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip = "10.2.0.10"
   }
 }
+# User Node Pool
+resource "azurerm_kubernetes_cluster_node_pool" "user" {
+
+  name                  = "userpool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+
+  vm_size        = var.user_vm_size
+  node_count     = var.user_node_count
+  mode           = "User"
+  os_type        = "Linux"
+  vnet_subnet_id = var.aks_subnet_id
+
+  max_pods        = 30
+  os_disk_size_gb = 30
+}

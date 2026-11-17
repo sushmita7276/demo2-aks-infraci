@@ -29,3 +29,11 @@ variable "aks_subnet_id" {
   type        = string
 }
 
+
+variable "user_vm_size" {
+  type = string
+}
+
+variable "user_node_count" {
+  type = number
+}

@@ -32,4 +32,8 @@ module "aks" {
   vm_size             = var.vm_size
 
   aks_subnet_id       = module.network.aks_subnet_id
+
+  user_vm_size    = var.user_vm_size
+  user_node_count = var.user_node_count
 }
+

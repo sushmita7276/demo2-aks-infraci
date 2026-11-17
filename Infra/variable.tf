@@ -4,7 +4,7 @@ variable "resource_group_name"{
 }
 variable "location" {
     type = string
-    default = "koreasouth"
+    default = "southindia"
 }
 variable "vnet_name"{
     type = string
@@ -32,5 +32,15 @@ variable "node_count"{
 }
 variable "vm_size"{
     type = string
-    default = "standard_D2s_v5"
+    default = "Standard_D2s_v6"
+}
+
+variable "user_vm_size" {
+  type    = string
+  default = "Standard_D2as_v5"
+}
+
+variable "user_node_count" {
+  type    = number
+  default = 2
 }
